@@ -148,10 +148,22 @@
   <input type="text" class="form-control" v-model="text">
   <button class="btn btn-primary mt-1">反轉字串</button>
   <div class="mt-3">
+    <!-- 可不必透過computed，直接將程式寫入 -->
     {{ text.split('').reverse().join('') }}
   </div>
+  <!-- 代入computed的回傳值 -->
   {{reverseText}}
 </div>
+
+<h3>Methods 與 Computed 的使用情境</h3>
+<ul>
+  <li><u>computed:</u> <br>是在監控資料更動後，重新運算結果呈現於畫面上一般來說不會修改資料，只會回傳用於畫面呈現的資料</li>
+  <li><u>methods:</u> <br>就是互動的函式(function)，需要"觸發"才會運作會用來修改資料內容</li>
+  <li><u>效能:</u> <br>
+  如果資料量大，computed 自然會比較慢 <br>
+  只要資料變動就會觸發，無形之中執行次數也會增加勒 <br>
+  因此在大量資料時，會建議透過 methods 減少不必要的運算喔</li>
+</ul>
 
 <script>
 var app = new Vue({
@@ -167,14 +179,6 @@ var app = new Vue({
   }
 });
 </script>
-
-<!-- 解答：
-computed: {
-  reverseText() {
-    return this.text.split('').reverse().join('');
-  }
-}
--->
         </div>
       </div>
     </div>

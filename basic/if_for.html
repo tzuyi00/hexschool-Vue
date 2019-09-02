@@ -146,7 +146,9 @@
 </div>
 
 <div id="app">
+  <!-- <pre>可列出陣列表示法 -->
   <pre> {{list}} </pre>
+  <div> {{list}} </div>
   <ul>
     <li v-for="(item,index) in list" v-if="item.age < 25">
       {{index + 1}} - {{item.name}} age: {{item.age}}

@@ -180,7 +180,7 @@
                       {{item.title}}
                     </label>
                   </div>
-                  <button type="button" class="close ml-auto" @click="removeTodo(key)" aria-label="Close">
+                  <button type="button" class="close ml-auto" @click="removeTodo(item)" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -204,6 +204,7 @@
         <script>
           var app = new Vue({
             el: '#app',
+
             data: {
               newTodo: '',
               todos: [
@@ -217,10 +218,13 @@
               cacheTitle:'',
               visibility: 'all',
             },
+// --------------------------------------------------
             methods: {
+        //addTodo
               addTodo: function () {
                 var value = this.newTodo.trim(); //trim()刪除多於空白鍵
                 var timestamp = Math.floor(Date.now());
+                //如果沒有內容，就return回去，不往下執行
                 if (!value) {
                   return;
                 }
@@ -228,26 +232,39 @@
                 this.todos.push({
                   id: timestamp,
                   title: value,
-                  completed: false,
+                  completed: false, //控制是否完成
                 });
                 this.newTodo = ''; //新增後將輸入內容清空
               },
-              removeTodo: function (key) {
-                this.todos.splice(key, 1)
+        //removeTodo
+              removeTodo: function (todo) {
+                var newIndex = "";
+                var vm = this;
+                vm.todos.forEach(function(item,key){
+                  if (todo.id === item.id){
+                    newIndex = key
+                  }
+                })
+                this.todos.splice(newIndex, 1)
               },
+        //editTodo
               editTodo: function (item) {
                 console.log(item);
                 this.cacheTodo = item;
                 this.cacheTitle = item.title;
               },
+        //cancelEdit
               cancelEdit: function () {
                 this.cacheTodo = {};
-              }
+              },
+        //doneEdit
               doneEdit: function (item) {
-
+                item.title = this.cacheTitle;
+                this.cacheTitle = '';
+                this.cacheTodo = {};
               }
             },
-
+// --------------------------------------------------
             computed: {
               filteredTodos: function () {
                 if (this.visibility == 'all') {

@@ -146,7 +146,8 @@
 
 <div id="app">
   <h4>字串</h4>
-  {{ text }}
+  {{text}} <br>
+  {{ text.split('').reverse().join('') }}
   <input type="text" class="form-control" v-model="text">
   <hr>
   <pre>{{ textarea }}</pre>

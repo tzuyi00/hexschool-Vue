@@ -149,16 +149,16 @@
 
 <div id="app">
   {{message}} <br>
- <span v-text="message"></span> <span class="text-danger">v-text="" 標籤裡放入純文字</span> <br>
-  <span v-html="message"></span> <span class="text-danger">v-html="" 標籤裡可放入html標籤</span> <br>
-  <input type="text" v-model="message">
+ <span v-text="message"></span> <span class="text-danger">v-text="" 裡放入純文字</span> <br>
+  <span v-html="message"></span> <span class="text-danger">v-html="" 裡可放入html標籤</span> <br>
+  <input type="text" v-model="message"> <span class="text-danger">v-model="" 雙向綁定</span>
 </div>
 
 <script>
 var app = new Vue({
   el: '#app',
-  // 在此建立資料內容
 
+  // 在此建立資料內容
   data: {
     message: '<span>哈囉</span>'
   }
