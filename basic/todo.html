@@ -271,7 +271,8 @@
                 }else if (this.visibility == 'active') { //進行中
                   var newTodos = [];
                   this.todos.forEach(function (item) {
-                    //如果completed不是false(未完成狀態)
+                    console.log(item.completed);
+                    //如果completed不是false(未完成狀態)->false
                     if (!item.completed) {
                       newTodos.push(item);
                     }
