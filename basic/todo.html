@@ -161,6 +161,7 @@
             <div class="card-header">
               <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
+                  <!-- 點擊此a時，visibility變all，因此當visibility是all時，此a要加上"active"這個classname -->
                   <a class="nav-link" :class="{'active': visibility =='all'}" @click="visibility = 'all'" href="#">全部</a>
                 </li>
                 <li class="nav-item">
@@ -184,15 +185,13 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
+                <!-- 修改輸入框 -->
                 <input type="text" class="form-control"
                   v-model="cacheTitle"
                   @keyup.esc="cancelEdit()"
                   @keyup.enter="doneEdit(item)"
                   v-if="item.id === cacheTodo.id">
               </li>
-              <!-- <li class="list-group-item">
-                <input type="text" class="form-control">
-              </li> -->
             </ul>
             <div class="card-footer d-flex justify-content-between">
               <span>還有 3 筆任務未完成</span>
@@ -224,8 +223,7 @@
               addTodo: function () {
                 var value = this.newTodo.trim(); //trim()刪除多於空白鍵
                 var timestamp = Math.floor(Date.now());
-                //如果沒有內容，就return回去，不往下執行
-                if (!value) {
+                if (!value) { //如果沒有內容，就return回去，不往下執行
                   return;
                 }
                 console.log(value, timestamp);
@@ -266,13 +264,14 @@
             },
 // --------------------------------------------------
             computed: {
+        //filteredTodos 頁籤切換後的
               filteredTodos: function () {
                 if (this.visibility == 'all') {
                   return this.todos;
                 }else if (this.visibility == 'active') { //進行中
                   var newTodos = [];
                   this.todos.forEach(function (item) {
-                    //如果completed是false
+                    //如果completed不是false(未完成狀態)
                     if (!item.completed) {
                       newTodos.push(item);
                     }
@@ -281,7 +280,7 @@
                 } else if (this.visibility == 'completed') { //已完成
                   var newTodos = [];
                   this.todos.forEach(function (item) {
-                    //如果completed是false
+                    //如果completed是false(已完成狀態)
                     if (item.completed) {
                       newTodos.push(item);
                     }
