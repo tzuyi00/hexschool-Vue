@@ -174,10 +174,14 @@
             </div>
             <ul class="list-group list-group-flush text-left">
               <li class="list-group-item" v-for="(item,key) in filteredTodos" @dblclick="editTodo(item)">
-                <div class="d-flex" v-if="item.id !== cacheTodo.id">
+                <!-- 內容顯示 判斷二擇一 -->
+                <div class="d-flex"
+                    v-if="item.id !== cacheTodo.id">
                   <div class="form-check">
                     <input type="checkbox" class="form-check-input" v-model="item.completed" :id="item.id">
-                    <label class="form-check-label" :class="{'completed': item.completed}" :for="item.id">
+                    <label class="form-check-label"
+                          :class="{'completed': item.completed}"
+                          :for="item.id">
                       {{item.title}}
                     </label>
                   </div>
@@ -185,17 +189,18 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <!-- 修改輸入框 -->
+                <!-- 修改輸入框 判斷二擇一(條件成立時，會把內容的 DOM 渲染出來) -->
                 <input type="text" class="form-control"
+                  v-if="item.id === cacheTodo.id"
                   v-model="cacheTitle"
                   @keyup.esc="cancelEdit()"
                   @keyup.enter="doneEdit(item)"
-                  v-if="item.id === cacheTodo.id">
+                  >
               </li>
             </ul>
             <div class="card-footer d-flex justify-content-between">
-              <span>還有 3 筆任務未完成</span>
-              <a href="#">清除所有任務</a>
+              <span>還有 {{undone}} 筆任務未完成</span>
+              <a href="#" @click.prevent="clearTodo()">清除所有任務</a>
             </div>
           </div>
         </div>
@@ -210,14 +215,14 @@
                 {
                   id: '11',
                   title: '你好',
-                  completed: false,
+                  completed: false, //預設false未完成,true已完成
                 }
               ],
               cacheTodo:{},
               cacheTitle:'',
               visibility: 'all',
             },
-// --------------------------------------------------
+// methods--------------------------------------------------
             methods: {
         //addTodo
               addTodo: function () {
@@ -235,34 +240,49 @@
                 this.newTodo = ''; //新增後將輸入內容清空
               },
         //removeTodo
-              removeTodo: function (todo) {
-                var newIndex = "";
+              removeTodo: function (todo) { //此(todo)為點擊X時removeTodo(item)帶入的item值
+                // 需以id為判斷，不能以索引值，因在頁籤切換時會造成索引的不同
                 var vm = this;
+                var newIndex = "";
                 vm.todos.forEach(function(item,key){
+                  // 如果原始todo的id = 帶入item的id，則將現在所在的頁籤索引帶入新索引內
                   if (todo.id === item.id){
                     newIndex = key
                   }
                 })
+                // 較簡捷寫法
+                // var newIndex = vm.todos.findIndex(function (item,key) {
+                //   return todo.id === item.id;
+                // })
                 this.todos.splice(newIndex, 1)
               },
         //editTodo
               editTodo: function (item) {
                 console.log(item);
-                this.cacheTodo = item;
-                this.cacheTitle = item.title;
+                // 預存的cacheTodo內容為input輸入框所呈現的值
+                this.cacheTodo = item; //cacheTodo帶入此項目的內容
+                this.cacheTitle = item.title; //cacheTitle帶入此項目的title
               },
         //cancelEdit
               cancelEdit: function () {
+                //input內容須給定義，才能跳轉出去
+                //將此定義為空物件，並無讓原item做更替，因此會回到原本item的內容
                 this.cacheTodo = {};
               },
         //doneEdit
               doneEdit: function (item) {
+                //將預存的cacheTitle放回原本item的title內，完成替換的動作
                 item.title = this.cacheTitle;
-                this.cacheTitle = '';
+                //input內容須給定義，才能跳轉出去
                 this.cacheTodo = {};
+                this.cacheTitle = ''; //將原本暫存的清空，以免影響到其他筆資料
+              },
+        //clearTodo
+              clearTodo: function() {
+                this.todos = [];
               }
             },
-// --------------------------------------------------
+// computed:--------------------------------------------------
             computed: {
         //filteredTodos 頁籤切換後的
               filteredTodos: function () {
@@ -271,8 +291,8 @@
                 }else if (this.visibility == 'active') { //進行中
                   var newTodos = [];
                   this.todos.forEach(function (item) {
-                    console.log(item.completed);
-                    //如果completed不是false(未完成狀態)->false
+                    console.log(item,item.completed);
+                    //如果completed不是false(未完成狀態)
                     if (!item.completed) {
                       newTodos.push(item);
                     }
@@ -289,6 +309,19 @@
                   return newTodos;
                 }
                 return[];
+              },
+        // undone 計算未完成的
+              undone: function () {
+                // var count = 0;
+                var num = [];
+                this.todos.forEach(function (item) {
+                  if (!item.completed) {
+                    // count++;
+                    num.push(item);
+                  }
+                })
+                // return count;
+                return num.length;
               }
             }
           });

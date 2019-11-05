@@ -141,7 +141,7 @@
 <div class="alert alert-secondary">
   <ol class="mb-0">
     <li>請將 button 改成 a 標籤，並加上 preventDefault() </li>
-    <li>使用修飾符取代 <span class="text-danger">v-on:click.prevent=""</span></li>
+    <li>使用修飾符取代event.preventDefault() <span class="text-danger">v-on:click.prevent=""</span></li>
     <li>將 input 加上 Enter 事件 <span class="text-danger">v-on:keyup.enter=""</span></li>
     <li>將範例改成使用縮寫表示 <span class="text-danger">將v-on:用@取代</span> <br>
         <span class="text-danger">v-on: == @  <br>
@@ -175,18 +175,6 @@ var app = new Vue({
 });
 </script>
 
-<!-- 解答：
-reverseText(event) {
-  // event.preventDefault();
-  this.newText = this.text.split('').reverse().join('');
-}
-
-<input type="text" class="form-control" v-model="text" v-on:keyup.enter="reverseText">
-<a href="#" class="btn btn-primary mt-1" v-on:click.prevent="reverseText">反轉字串</a>
-<div class="mt-3">
-  {{ newText }}
-</div>
--->
         </div>
       </div>
     </div>
