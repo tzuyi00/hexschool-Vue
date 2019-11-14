@@ -11,7 +11,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>    <script src="/javascripts/vendor.js"></script>
 
   </head>
-  
+
   <body class="bg-lighter">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand" href="/">Vue.js 練習手冊</a>
@@ -35,85 +35,85 @@
       <li class="nav-item">
         <a class="nav-link" href="/es6/let_const.html">ES6</a>
       </li>
-      
+
     </ul>
   </div>
 </nav>
     <div class="container my-5">
       <div class="row">
-        
+
           <div class="col-md-3">
-            
+
 <div>
   <h6 class="text-capitalize text-muted">components</h6>
-  
-    
+
+
       <a href="/components/basic.html"  class="btn btn-block btn-primary active">
         基礎元件
       </a>
-    
-  
-    
+
+
+
       <a href="/components/function_return.html"  class="btn btn-block btn-link">
         元件必須使用 function return
       </a>
-    
-  
-    
+
+
+
       <a href="/components/prop_basic.html"  class="btn btn-block btn-link">
         由外到內的資料傳遞
       </a>
-    
-  
-    
+
+
+
       <a href="/components/prop_adv.html"  class="btn btn-block btn-link">
         Props 注意事項
       </a>
-    
-  
-    
+
+
+
       <a href="/components/prop_type.html"  class="btn btn-block btn-link">
         Props 的型別
       </a>
-    
-  
-    
+
+
+
       <a href="/components/emit.html"  class="btn btn-block btn-link">
         向外層傳送事件(Data)
       </a>
-    
-  
-    
+
+
+
       <a href="/components/slot.html"  class="btn btn-block btn-link">
         Slot 插槽替換
       </a>
-    
-  
-    
+
+
+
       <a href="/components/is.html"  class="btn btn-block btn-link">
         動態組建切換
       </a>
-    
-  
-    
+
+
+
       <a href="/components/eventbus.html"  class="btn btn-block btn-link">
         Event Bus
       </a>
-    
-  
-    
+
+
+
       <a href="/components/homework_component.html"  class="btn btn-block btn-link">
         作業練習：元件變換
       </a>
-    
-  
+
+
 </div>
           </div>
-        
-        <div class="col-md-9 post">      
+
+        <div class="col-md-9 post">
           <!-- 練習開始 -->
           <h1 class="mt-0 text-muted">基礎元件練習</h1>
-          
+
 <div class="alert alert-secondary">
   <ol class="mb-0">
     <li>使用 x-template 建立表格元件</li>
@@ -128,16 +128,38 @@
     <thead>
     </thead>
     <tbody>
-      <tr v-for="(item, key) in data" :item="item" :key="key">
+      <!-- tbody內只能使用tr標籤，故使用 is 掛載 template，動態切換模板-->
+      <!-- <row-component v-for="(item, key) in data" :person="item" :key="key"></row-component> -->
+      <tr is="row-component" v-for="(item, key) in data" :person="item" :key="key"></tr> <!-- :person="item"，是因為使用props將資料傳入元件內 -->
+
+      <!-- <tr v-for="(item, key) in data" :item="item" :key="key">
         <td>{{ item.name }}</td>
         <td>{{ item.cash }}</td>
         <td>{{ item.icash }}</td>
-      </tr>
+      </tr> -->
     </tbody>
   </table>
 </div>
 
+<script type="text/x-template" id="rowComponentTemplate">
+  <tr>
+    <td>{{ person.name }}</td>
+    <td>{{ person.cash }}</td>
+    <td>{{ person.icash }}</td>
+  </tr>
+</script>
+
 <script>
+// Vue.component('row-component',{
+//   props: ['person'],
+//   template:'#rowComponentTemplate'
+// })
+
+var child = {
+  props: ['person'],
+  template: '#rowComponentTemplate'
+}
+
 var app = new Vue({
   el: '#app',
   data: {
@@ -163,11 +185,14 @@ var app = new Vue({
         icash: 100,
       },
     ]
+  },
+  components: {
+    "row-component": child
   }
 });
 </script>
 
-<!-- 
+<!--
 <script type="text/x-template" id="row-component">
   <tr>
     <td>{{ item.name }}</td>
@@ -209,9 +234,9 @@ var app = new Vue({
   },
   components: {
     "row-component": child
-  } 
+  }
 });
---> 
+-->
         </div>
       </div>
     </div>
