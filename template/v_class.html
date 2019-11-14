@@ -133,7 +133,7 @@
 
   <h4>陣列寫法</h4>
   <button class="btn" :class="arrayClass">請操作本元件</button>
-  <p>請用陣列呈現此元件 className</p>
+  <p>請用陣列呈現此元件 className <br> 用 checkbox 的 value 值去切換元件的classname</p>
   <div class="form-check">
     <input type="checkbox" class="form-check-input" id="classToggle3" v-model="arrayClass" value="btn-outline-primary">
     <label class="form-check-label" for="classToggle3">切換樣式</label>
@@ -151,11 +151,11 @@
   <div class="box" :style="{ backgroundColor:'red' }"></div>
   <!-- 物件變為一個變數帶入 -->
   <div class="box" :style="styleObject"></div>
-  <!-- 陣列方式帶入 -->
-  <div class="box" :style="[{ backgroundColor:'red' },{ borderWidth: '5px' }]"></div>
+  <!-- 變數用陣列方式帶入 -->
+  <div class="box" :style="[styleObject, styleObject2]"></div>
   <hr>
-  <h5>自動加上 Prefix (每個版本結果不同)</h5>
-  <div class="box"></div>
+  <h5>自動加上 Prefix (每個版本結果不同)，可自動適應各個瀏覽器</h5>
+  <div class="box" :style="styleObject3"></div>
 </div>
 
 <script>
@@ -179,7 +179,7 @@ var app = new Vue({
       borderWidth: '5px'
     },
     styleObject2: {
-      boxShadow: '3px 3px 5px rgba(0, 0, 0, 0.16)'
+      boxShadow: '3px 3px 5px rgba(29, 214, 32, 0.8)'
     },
     styleObject3: {
       userSelect: 'none'

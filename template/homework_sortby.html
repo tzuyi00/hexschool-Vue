@@ -11,7 +11,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>    <script src="/javascripts/vendor.js"></script>
 
   </head>
-  
+
   <body class="bg-lighter">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand" href="/">Vue.js 練習手冊</a>
@@ -35,73 +35,73 @@
       <li class="nav-item">
         <a class="nav-link" href="/es6/let_const.html">ES6</a>
       </li>
-      
+
     </ul>
   </div>
 </nav>
     <div class="container my-5">
       <div class="row">
-        
+
           <div class="col-md-3">
-            
+
 <div>
   <h6 class="text-capitalize text-muted">template</h6>
-  
-    
+
+
       <a href="/template/basic.html"  class="btn btn-block btn-link">
         基礎模板語法
       </a>
-    
-  
-    
+
+
+
       <a href="/template/v_class.html"  class="btn btn-block btn-link">
         切換樣式
       </a>
-    
-  
-    
+
+
+
       <a href="/template/v_if.html"  class="btn btn-block btn-link">
         v-if 模板判斷
       </a>
-    
-  
-    
+
+
+
       <a href="/template/v_for.html"  class="btn btn-block btn-link">
         v-for 迴圈
       </a>
-    
-  
-    
+
+
+
       <a href="/template/computed_watch.html"  class="btn btn-block btn-link">
         計算及監聽
       </a>
-    
-  
-    
+
+
+
       <a href="/template/form.html"  class="btn btn-block btn-link">
         表單補充介紹
       </a>
-    
-  
-    
+
+
+
       <a href="/template/v_on.html"  class="btn btn-block btn-link">
         v-on 事件綁定
       </a>
-    
-  
-    
+
+
+
       <a href="/template/homework_sortby.html"  class="btn btn-block btn-primary active">
         作業練習：表格排序
       </a>
-    
-  
+
+
 </div>
           </div>
-        
-        <div class="col-md-9 post">      
+
+        <div class="col-md-9 post">
           <!-- 練習開始 -->
           <h1 class="mt-0 text-muted">作業練習：表格排序</h1>
-          
+
 <h3>模板練習作業：透過點擊 th 方式，反轉表格的排序</h3>
 <p>僅需要排序價格、到期日。</p>
 <div class="alert alert-secondary">
@@ -119,16 +119,21 @@
     <thead>
       <tr>
         <th>品名</th>
-        <th class="click">價格 
-          <!-- isReverse 為反轉 className -->
-          <span class="icon isReverse">
+
+        <!--點擊時觸發sort('price'),更換sortData裡的值-->
+        <th class="click" @click="sort('price'),isReverse=!isReverse">價格
+          <span class="icon" :class="{inverse:isReverse}" v-if="sortData=='price'"> <!--當sortData等於price時才會顯示箭頭的icon-->
             <i class=" fas fa-angle-up text-success"></i>
           </span>
         </th>
-        <th class="click">到期日 
+
+        <th class="click" @click="sort('expiryDate'),isReverse=!isReverse">到期日
+          <span class="icon" :class="{inverse:isReverse}" v-if="sortData=='expiryDate'"> <!--當sortData等於expiryDate時才會顯示箭頭的icon-->
+            <i class=" fas fa-angle-up text-success"></i>
+          </span>
         </th>
       </tr>
-      <tr v-for="item in data">
+      <tr v-for="item in filterArray" :key="item.name">
         <td>{{ item.name }}</td>
         <td>{{ item.price }}</td>
         <td>{{ item.expiryDate }}</td>
@@ -180,9 +185,33 @@ var app = new Vue({
         expiryDate: 200
       }
     ],
+    isReverse: false,
+    sortData: 'price'
   },
   // 請在此撰寫 JavaScript
-  computed: {}
+  computed: {
+    filterArray: function () {
+      let vm = this;
+      //使用JS sort()自動做排序功能
+      let newData = vm.data.sort(function (a, b) {
+        //設定a,b的內容為sortData的值(因sortData會price跟expiryDate做切換)
+        a = a[vm.sortData];
+        b = b[vm.sortData];
+        if (vm.isReverse) {
+          return a - b //若是true，正向順序排列
+        } else {
+          return b - a //false，逆向排列
+        }
+      })
+      return newData
+    }
+  },
+  methods: {
+    sort: function (value) {
+      this.sortData = value;
+      console.log(this.sortData)
+    }
+  }
 });
 </script>
 
@@ -203,7 +232,7 @@ var app = new Vue({
 }
 </style>
 
- 
+
         </div>
       </div>
     </div>
