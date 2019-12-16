@@ -132,10 +132,11 @@
       <!-- <row-component v-for="(item, key) in data" :person="item" :key="key"></row-component> -->
       <tr is="row-component" v-for="(item, key) in data" :person="item" :key="key"></tr>
       <!-- :person="item"，是因為使用props將資料傳入元件內
-        (先透過v-for，將資料放入item，item再放入person，再使用props方法將person資料傳入#rowComponentTemplate元件內) -->
+        (先透過v-for，將資料放入item，item再放入person，再使用props方法將person資料傳入#rowComponentTemplate內顯示) -->
 
 
-      <!-- <tr v-for="(item, key) in data" :item="item" :key="key">
+      <!-- 透過component移至#rowComponentTemplate
+      <tr v-for="(item, key) in data" :item="item" :key="key">
         <td>{{ item.name }}</td>
         <td>{{ item.cash }}</td>
         <td>{{ item.icash }}</td>
@@ -152,6 +153,10 @@
   </tr>
 </script>
 
+<!-- 元件說明:
+每一個component是一個元件，自訂row-component標籤(容器)來放入我的內容，
+元件內:用props方法將person(自訂屬性)內的資料傳入元件
+透過template，將資料帶入#rowComponentTemplate顯示 -->
 <script>
   // 全域註冊component
 // Vue.component('row-component',{
@@ -198,51 +203,6 @@ var app = new Vue({
 });
 </script>
 
-<!--
-<script type="text/x-template" id="row-component">
-  <tr>
-    <td>{{ item.name }}</td>
-    <td>{{ item.cash }}</td>
-    <td>{{ item.icash }}</td>
-  </tr>
-</script>
-
-var child = {
-  props: ['item'],
-  template: '#row-component'
-}
-
-var app = new Vue({
-  el: '#app',
-  data: {
-    data: [
-      {
-        name: '小明',
-        cash: 100,
-        icash: 500,
-      },
-      {
-        name: '杰倫',
-        cash: 10000,
-        icash: 5000,
-      },
-      {
-        name: '漂亮阿姨',
-        cash: 500,
-        icash: 500,
-      },
-      {
-        name: '老媽',
-        cash: 10000,
-        icash: 100,
-      },
-    ]
-  },
-  components: {
-    "row-component": child
-  }
-});
--->
         </div>
       </div>
     </div>

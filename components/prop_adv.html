@@ -121,6 +121,7 @@
 </div>
 
 <div id="app">
+
 <!-- photo html tag -->
   <h2>單向數據流</h2>
   <photo :img-url="url"></photo>
@@ -152,13 +153,14 @@
       </keep-alive>
     </div>
   </div>
+
 </div>
 
 
 <!-- #photo x-template元件 -->
 <script type="text/x-template" id="photo">
   <div>
-    <img :src="imgUrl" class="img-fluid" alt="" />
+    <img :src="imgUrl" class="w-50" alt="" />
     <input type="text" class="form-control" v-model="newUrl">
   </div>
 </script>

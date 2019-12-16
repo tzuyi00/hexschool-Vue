@@ -125,12 +125,12 @@
   <!-- 注意:script駝峰式命名撰寫，要在html呈現時，大寫前要"-小寫字母" -->
   <photo-tag img-url="https://images.unsplash.com/photo-1522204538344-922f76ecc041?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=50e38600a12d623a878983fc5524423f&auto=format&fit=crop&w=1351&q=80"></photo-tag>
   <h2>動態傳遞</h2>
-  <photo-tag :img-url="url"></photo-tag>
+  <photo-tag :img-url="url"></photo-tag> <!-- 透過v-bind:將data內url的值帶入 -->
 </div>
 
 <script type="text/x-template" id="photo">
 <div>
-  <img :src="imgUrl" class="img-fluid" alt="" />
+  <img :src="imgUrl" class="w-50" alt="" />
   <p>風景照</p>
 </div>
 </script>
@@ -148,13 +148,6 @@ var app = new Vue({
   }
 });
 </script>
-
-<!--
-<h2>靜態傳遞</h2>
-<photo img-url="https://images.unsplash.com/photo-1520681080137-2ba442993dd4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f9d2aebc72c11a9d5bcbcd66e6ca8cb2&auto=format&fit=crop&w=1350&q=80"></photo>
-<h2>動態傳遞</h2>
-<photo :img-url="url"></photo>
--->
 
         </div>
       </div>
