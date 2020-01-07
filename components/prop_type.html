@@ -122,11 +122,11 @@
 
 <div id="app">
   <h2>Props 的型別</h2>
-  <prop-type :cash="cash"></prop-type> <!-- 傳入data的值 -->
+  <prop-type :cash="cash"></prop-type> <!-- 透過component傳入值 -->
   <prop-type></prop-type> <!-- 沒資料傳入時，可設預設值 -->
 
   <h2 class="mt-3">靜態與動態傳入數值差異 </h2>
-  <h4>靜態傳入時為字串，動態傳入則可為number</h4>
+  <h4>數值靜態傳入時為字串，動態傳入則可為number</h4>
   <prop-type cash="300"></prop-type> <!-- 靜態 -->
   <prop-type :cash="400"></prop-type> <!-- 動態 -->
 </div>
@@ -134,7 +134,7 @@
 <script type="text/x-template" id="propType">
 <div>
   <input type="number" class="form-control" v-model="newCash">
-  {{ typeof(cash)}}
+  {{ typeof(cash)}}  <!-- 辨識目前型別 -->
 </div>
 </script>
 
@@ -142,7 +142,7 @@
 Vue.component('prop-type', {
   // props: ['cash'],
 
-  // 解答：
+  // 解答：在props內定義資料型別
   props: {
     cash: {
       type: Number, //定義資料型別
@@ -161,7 +161,7 @@ var app = new Vue({
   el: '#app',
   data: {
     // cash: "100"  加""變成字串
-    cash: 100  //number
+    cash: 100  //型別:number
   }
 });
 </script>

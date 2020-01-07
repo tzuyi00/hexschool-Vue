@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>向外層傳送事件(Data)</title>
+    <title>Props 注意事項</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="images/favicon.ico" rel="shortcut icon">
     <meta charset="UTF-8">
@@ -66,7 +66,7 @@
 
 
 
-      <a href="/components/prop_adv.html"  class="btn btn-block btn-link">
+      <a href="/components/prop_adv.html"  class="btn btn-block btn-primary active">
         Props 注意事項
       </a>
 
@@ -78,7 +78,7 @@
 
 
 
-      <a href="/components/emit.html"  class="btn btn-block btn-primary active">
+      <a href="/components/emit.html"  class="btn btn-block btn-link">
         向外層傳送事件(Data)
       </a>
 
@@ -112,7 +112,7 @@
 
         <div class="col-md-9 post">
           <!-- 練習開始 -->
-          <h1 class="mt-0 text-muted">向外層傳送事件(Data)</h1>
+          <h1 class="mt-0 text-muted">Props 注意事項(刪除photo，只有card部分)</h1>
 
 <div class="alert alert-secondary">
   <ol class="mb-0">
@@ -121,72 +121,102 @@
 </div>
 
 <div id="app">
-  <h2>透過 emit 向外傳遞資訊</h2>
-  我透過元件儲值了 {{ cash }} 元
-  <button class="btn btn-primary" @click="incrementTotal(1)">點我</button>
-  <!-- 觸發事件@increment可自訂名，透過$emit觸發 -->
-  <button-counter @increment="incrementTotal"></button-counter>
-  <hr>
-  <button-counter></button-counter>
+<!-- card html tag -->
+  <h2 class="mt-3">物件傳參考特性 及 尚未宣告的變數</h2>
+  <div class="row">
+    <div class="col-sm-4">
+      <!-- ajax資料匯入會有時間差，使:user-data讀取不到user資料而出錯，
+      可使用v-if控制，讓讀取到user資料時才顯示 -->
+      <card :user-data="user" v-if="user.phone"></card>
+    </div>
+  </div>
+
+<!-- keep-card html tag -->
+  <h2 class="mt-3">維持狀態與生命週期</h2>
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="isShow" v-model="isShow">
+    <label class="form-check-label" for="isShow">Check me out</label>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <!-- checkbox切換每顯示一次，都會重新執行一次ajax -->
+      <!-- 使用<keep-alive>標籤，可維持狀態不被摧毀和重新執行 -->
+      <keep-alive>
+        <keep-card v-if="isShow">
+        </keep-card>
+      </keep-alive>
+    </div>
+  </div>
 </div>
 
+<!-- #card x-template元件 -->
+<script type="text/x-template" id="card">
+  <div class="card">
+    <!-- v-if="usertwo.picture" v-if="usertwo.name" 使用原因:
+      資料傳入時可能會缺乏部分資源(有時間差)，如果在物件超過兩個階層時(需抓到picture的下層large)，
+      需再本物件額外增加一個判斷，確保資料載入後才將資料顯示出 -->
+    <img class="card-img-top" :src="usertwo.picture.large" v-if="usertwo.picture" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title" v-if="usertwo.name">{{ usertwo.name.first }} {{ usertwo.name.last }}</h5>
+      <p class="card-text">{{ usertwo.email }}</p>
+    </div>
+    <div class="card-footer">
+      <input type="email" class="form-control" v-model="usertwo.email">
+    </div>
+  </div>
+</script>
+
 <script>
-Vue.component('buttonCounter', {
-  template: `<div>
-    <button @click="incrementCounter" class="btn btn-outline-primary">增加 {{ counter }} 元</button>
-    <input type="number" class="form-control mt-2" v-model="counter">
-  </div>`,
+  // #card component元件
+Vue.component('card', {
+  props: ['userData'],
+  template: '#card',
+  data: function () {
+    return {
+      usertwo: this.userData
+    }
+  }
+    //物件傳遞特性，當被賦予的變數的值改變了，原變數的值也會改變
+});
+
+  // #keepCard component元件
+Vue.component('keepCard', {
+  template: '#card',
   data: function() {
     return {
-      counter: 1
+      usertwo: {}
     }
   },
-  methods: {
-    incrementCounter: function () {
-      // emit可以用來觸發外部的事件(increment對照畫面上的@increment)，由內層觸發到外層
-      // Number() 確保傳出為數值
-      this.$emit('increment', Number(this.counter));
-    }
+  created: function() {
+    var vm = this;
+    $.ajax({
+      url: 'https://randomuser.me/api/',
+      dataType: 'json',
+      success: function(data) {
+        vm.usertwo = data.results[0];
+      }
+    });
   }
 });
 
 var app = new Vue({
   el: '#app',
   data: {
-    cash: 300
+    user: {},
+    isShow: true
   },
-  methods: {
-    incrementTotal: function (newNumber) {
-      this.cash = this.cash + newNumber;
-    }
+  created: function() {
+    var vm = this;
+    $.ajax({
+      url: 'https://randomuser.me/api/',
+      dataType: 'json',
+      success: function(data) {
+        vm.user = data.results[0];
+      }
+    });
   }
 });
 </script>
-
-<!--
-<button-counter v-on:increment="incrementTotal"></button-counter>
-<hr>
-<button-counter v-on:increment="incrementTotal"></button-counter>
-
-Vue.component('buttonCouter', {
-  // ...
-  methods: {
-    incrementCounter: function () {
-      this.$emit('increment', Number(this.counter));
-    }
-  }
-});
-
-var app = new Vue({
-  // ...
-  methods: {
-    incrementTotal: function(newCount) {
-      console.log(newCount)
-      this.cash = this.cash + newCount;
-    }
-  }
-});
--->
         </div>
       </div>
     </div>

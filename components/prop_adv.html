@@ -112,7 +112,7 @@
 
         <div class="col-md-9 post">
           <!-- 練習開始 -->
-          <h1 class="mt-0 text-muted">Props 注意事項</h1>
+          <h1 class="mt-0 text-muted">Props 注意事項 <span class="text-danger">*難</span> </h1>
 
 <div class="alert alert-secondary">
   <ol class="mb-0">
@@ -168,19 +168,22 @@
 <!-- #card x-template元件 -->
 <script type="text/x-template" id="card">
   <div class="card">
-    <!-- v-if="user.picture" v-if="user.name" 資料傳入時可能會缺乏部分資源，如果在物件超過兩個階層時，需再額外增加一個判斷 -->
-    <img class="card-img-top" :src="user.picture.large" v-if="user.picture" alt="Card image cap">
+    <!-- v-if="usertwo.picture" v-if="usertwo.name" 使用原因:
+      資料傳入時可能會缺乏部分資源(有時間差)，如果在物件超過兩個階層時(需抓到picture的下層large)，
+      需再本物件額外增加一個判斷，確保資料載入後才將資料顯示出 -->
+    <img class="card-img-top" :src="usertwo.picture.large" v-if="usertwo.picture" alt="Card image cap">
     <div class="card-body">
-      <h5 class="card-title" v-if="user.name">{{ user.name.first }} {{ user.name.last }}</h5>
-      <p class="card-text">{{ user.email }}</p>
+      <h5 class="card-title" v-if="usertwo.name">{{ usertwo.name.first }} {{ usertwo.name.last }}</h5>
+      <p class="card-text">{{ usertwo.email }}</p>
     </div>
     <div class="card-footer">
-      <input type="email" class="form-control" v-model="user.email">
+      <input type="email" class="form-control" v-model="usertwo.email">
     </div>
   </div>
 </script>
 
 <script>
+  // #photo component元件
 Vue.component('photo', {
   props: ['imgUrl'],
   template: '#photo',
@@ -189,25 +192,28 @@ Vue.component('photo', {
   data: function () {
     return {
       newUrl: this.imgUrl
+      // (newUrl取代原本用imgUrl接原data內url的值)
     }
   }
 })
 
+  // #card component元件
 Vue.component('card', {
   props: ['userData'],
   template: '#card',
   data: function () {
     return {
-      user: this.userData
+      usertwo: this.userData
     }
   }
 });
 
+  // #keepCard component元件
 Vue.component('keepCard', {
   template: '#card',
   data: function() {
     return {
-      user: {}
+      usertwo: {}
     }
   },
   created: function() {
@@ -216,7 +222,7 @@ Vue.component('keepCard', {
       url: 'https://randomuser.me/api/',
       dataType: 'json',
       success: function(data) {
-        vm.user = data.results[0];
+        vm.usertwo = data.results[0];
       }
     });
   }
@@ -241,34 +247,6 @@ var app = new Vue({
   }
 });
 </script>
-
-
-<!--
-<h2>單向數據流</h2>
-<photo :img-url="url"></photo>
-<p>修正單向數據流所造成的錯誤</p>
-
-<h2 class="mt-3">物件傳參考特性 及 尚未宣告的變數</h2>
-<div class="row">
-  <div class="col-sm-4">
-    <card :user-data="user" v-if="user.picture"></card>
-  </div>
-</div>
-
-<h2 class="mt-3">維持狀態與生命週期</h2>
-<div class="form-check">
-  <input type="checkbox" class="form-check-input" id="isShow" v-model="isShow">
-  <label class="form-check-label" for="isShow">Check me out</label>
-</div>
-<div class="row">
-  <div class="col-sm-4">
-    <keep-alive>
-      <keep-card v-if="isShow">
-      </keep-card>
-    </keep-alive>
-  </div>
-</div>
--->
         </div>
       </div>
     </div>
