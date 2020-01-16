@@ -127,7 +127,7 @@
   <!-- 觸發事件@increment可自訂名，透過$emit觸發 -->
   <button-counter @increment="incrementTotal"></button-counter>
   <hr>
-  <button-counter></button-counter>
+  <button-counter @increment="incrementTotal"></button-counter>
 </div>
 
 <script>
@@ -162,31 +162,6 @@ var app = new Vue({
   }
 });
 </script>
-
-<!--
-<button-counter v-on:increment="incrementTotal"></button-counter>
-<hr>
-<button-counter v-on:increment="incrementTotal"></button-counter>
-
-Vue.component('buttonCouter', {
-  // ...
-  methods: {
-    incrementCounter: function () {
-      this.$emit('increment', Number(this.counter));
-    }
-  }
-});
-
-var app = new Vue({
-  // ...
-  methods: {
-    incrementTotal: function(newCount) {
-      console.log(newCount)
-      this.cash = this.cash + newCount;
-    }
-  }
-});
--->
         </div>
       </div>
     </div>

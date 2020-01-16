@@ -120,7 +120,7 @@
       <tr>
         <th>品名</th>
 
-        <!--點擊時觸發sort('price'),更換sortData裡的值-->
+        <!--點擊時 1.觸發methed的sort，帶入參數為'price',更換sortData裡的值 2.isReverse做切換(箭頭切換)-->
         <th class="click" @click="sort('price'),isReverse=!isReverse">價格
           <span class="icon" :class="{inverse:isReverse}" v-if="sortData=='price'"> <!--當sortData等於price時才會顯示箭頭的icon-->
             <i class=" fas fa-angle-up text-success"></i>
@@ -133,7 +133,7 @@
           </span>
         </th>
       </tr>
-      <tr v-for="item in filterArray" :key="item.name">
+      <tr v-for="item in filterArray" :key="item.name"> <!-- 抓取排序後的值 -->
         <td>{{ item.name }}</td>
         <td>{{ item.price }}</td>
         <td>{{ item.expiryDate }}</td>
@@ -197,12 +197,13 @@ var app = new Vue({
         a = a[vm.sortData];
         b = b[vm.sortData];
         if (vm.isReverse) {
-          return a - b //若是true，正向順序排列
+          return a - b //若vm.isReverse是true，正向順序排列
         } else {
-          return b - a //false，逆向排列
+          return b - a //若vm.isReverse是false，逆向排列
         }
       })
       return newData
+      // 參考: http://www.eion.com.tw/Blogger/?Pid=1170
     }
   },
   methods: {
