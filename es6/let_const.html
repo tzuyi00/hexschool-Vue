@@ -11,7 +11,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>    <script src="/javascripts/vendor.js"></script>
 
   </head>
-  
+
   <body class="bg-lighter">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand" href="/">Vue.js 練習手冊</a>
@@ -35,67 +35,67 @@
       <li class="nav-item">
         <a class="nav-link" href="/es6/let_const.html">ES6</a>
       </li>
-      
+
     </ul>
   </div>
 </nav>
     <div class="container my-5">
       <div class="row">
-        
+
           <div class="col-md-3">
-            
+
 <div>
   <h6 class="text-capitalize text-muted">es6</h6>
-  
-    
+
+
       <a href="/es6/let_const.html"  class="btn btn-block btn-primary active">
         let, const 基礎教學
       </a>
-    
-  
-    
+
+
+
       <a href="/es6/spread_operator.html"  class="btn btn-block btn-link">
         展開與其餘
       </a>
-    
-  
-    
+
+
+
       <a href="/es6/destructuring.html"  class="btn btn-block btn-link">
         解構賦值
       </a>
-    
-  
-    
+
+
+
       <a href="/es6/shorthand.html"  class="btn btn-block btn-link">
         縮寫
       </a>
-    
-  
-    
+
+
+
       <a href="/es6/arrow_function.html"  class="btn btn-block btn-link">
         箭頭函式與傳統函式之差異
       </a>
-    
-  
-    
+
+
+
       <a href="/es6/template_string.html"  class="btn btn-block btn-link">
         Template String
       </a>
-    
-  
-    
+
+
+
       <a href="/es6/array_function.html"  class="btn btn-block btn-link">
         陣列方法
       </a>
-    
-  
+
+
 </div>
           </div>
-        
-        <div class="col-md-9 post">      
+
+        <div class="col-md-9 post">
           <!-- 練習開始 -->
           <h1 class="mt-0 text-muted">let, const ES6 基礎教學</h1>
-          
+
 <div class="alert alert-secondary">
   <ol class="mb-0">
     <li>請跟隨課程完成此章節。</li>
@@ -106,54 +106,106 @@
 <script>
 // #1
 // 修改 var -> let
-var mom = '老媽';
-(function () {
-  console.log(mom);
-})();
+//undefined 記憶體已準備位置
+//not defined
+
+//   console.log(mom);
+// let mom = '老媽';
+// (function () {
+//   console.log(mom);
+// })();
+
+// -----------------------------------------------------------------
 
 // #2
 // 修改 var -> let
-// function varMing () {
-//   var ming = '小明';
-//   if (true) {
-//     var ming = '杰哥';  
-//     // 這裡的 ming 依然是外層的小明，所以小明即將被取代
-//   }
-//   console.log(ming);  // '杰哥'
-// }
+//var的作用域: function scope(整個function的範圍)
+//let的作用域: block(只有他所在的括號內)
 
+// function varMing () {
+//   let ming = '小明';
+//   if (true) {
+//     let ming = '杰哥';
+//     // 這裡的 ming 依然是外層的小明，所以小明即將被取代
+//     console.log(ming); //在block內會是'杰哥'
+//   }
+//   console.log(ming);  // var是'杰哥'  let是'小明'
+// }
+//   varMing();
+
+// -----------------------------------------------------------------
 
 // #3
 // 修改 var -> let
-// for (var i = 0; i < 10; i++) {
+//var i = 全域變數，可用window.i獲得i的數值
+//let i = 區域內變數，無法用window.i獲得全域的變數，undefined
+//因本案例沒用function包住，在var時，此setTimeout屬於非同步事件，等於是for迴圈執行完後才執行setTimeout，let才可獲得預期結果
+
+// for (let i = 0; i < 10; i++) {
 //   console.log(i);
 //   setTimeout(function () {
-//     console.log('這執行第' + i + '次');
+//     console.log('這執行第' + i + '次'); //i是let所宣告的變數
 //   }, 10);
 // }
 
+// -----------------------------------------------------------------
+
+// #6
+// 額外問題，不使用 let，上述答案如何解答
+
+// 解答1:
+  // for (var i = 0; i < 10; i++) {
+  //   console.log(i);
+  //   count(i)
+  // }
+  // function count(i) {
+  //   setTimeout(function () {
+  //     console.log('這執行第' + i + '次');
+  //   }, 10);
+  // }
+
+// 解答2:
+  for (var i = 0; i < 10; i++) {
+    console.log(i);
+    (function (w) {
+      setTimeout(function () {
+        console.log('這執行第' + w + '次');
+      }, 1000*w);
+    })(i)
+  }
+
+// -----------------------------------------------------------------
+
 // #4
-// const
+// const常數
+
+//不能指派新的變數在"常數"上面(let、var可)
 // const ming = '鐵錚錚男子漢';
+// ming = '不是男子漢'; //會報錯
+
+// let、const 同個區塊上不可重複命名(var則可以)
+// var b = '第一次命名'
+// var b = '第二次命名'
+// console.log('b=' + b);
+
+// -----------------------------------------------------------------
 
 // #5
 // const 與 物件
+//但常數"物件內的屬性"是可以新指派的
+//因物件本身是傳參考，不是傳值
+
 // const family = {
 //   mom: '老媽',
 //   me: '小明',
 //   sister: '小橙'
 // };
 // family.father = '爸爸';
+// console.log(family);
 
-// #6
-// 額外問題，不使用 let，上述答案如何解答
-// for (var i = 0; i < 10; i++) {
-//   console.log(i);
-//   setTimeout(function () {
-//     console.log('這執行第' + i + '次');
-//   }, 10);
-// }
-</script> 
+
+
+</script>
         </div>
       </div>
     </div>

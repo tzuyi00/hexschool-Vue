@@ -210,8 +210,8 @@
             el: '#app',
 
             data: {
-              newTodo: '',
-              todos: [
+              newTodo: '', //新增輸入的內容
+              todos: [  //預設陣列的內容
                 {
                   id: '11',
                   title: '你好',
@@ -222,11 +222,11 @@
               cacheTitle:'',
               visibility: 'all',
             },
-// methods--------------------------------------------------
+// methods-有哪些功能-觸發後執行------------------------------------------------
             methods: {
         //addTodo
               addTodo: function () {
-                var value = this.newTodo.trim(); //trim()刪除多於空白鍵
+                var value = this.newTodo.trim(); //透過v-model取得input值，trim()刪除多於空白鍵
                 var timestamp = Math.floor(Date.now());
                 if (!value) { //如果沒有內容，就return回去，不往下執行
                   return;
@@ -282,31 +282,31 @@
                 this.todos = [];
               }
             },
-// computed:--------------------------------------------------
+// computed:-會自動計算-------------------------------------------------
             computed: {
         //filteredTodos 頁籤切換後的
               filteredTodos: function () {
                 if (this.visibility == 'all') {
                   return this.todos;
                 }else if (this.visibility == 'active') { //進行中
-                  var newTodos = [];
+                  var newfilterTodos = [];
                   this.todos.forEach(function (item) {
                     console.log(item,item.completed);
-                    //如果completed不是false(未完成狀態)
-                    if (!item.completed) {
-                      newTodos.push(item);
+                    //如果completed是false(未完成狀態)
+                    if (item.completed == false) {
+                      newfilterTodos.push(item);
                     }
                   })
-                  return newTodos;
+                  return newfilterTodos;
                 } else if (this.visibility == 'completed') { //已完成
-                  var newTodos = [];
+                  var newfilterTodos = [];
                   this.todos.forEach(function (item) {
-                    //如果completed是false(已完成狀態)
-                    if (item.completed) {
-                      newTodos.push(item);
+                    //如果completed是true(已完成狀態)
+                    if (item.completed == true) {
+                      newfilterTodos.push(item);
                     }
                   })
-                  return newTodos;
+                  return newfilterTodos;
                 }
                 return[];
               },
@@ -315,7 +315,7 @@
                 // var count = 0;
                 var num = [];
                 this.todos.forEach(function (item) {
-                  if (!item.completed) {
+                  if (item.completed == false) {
                     // count++;
                     num.push(item);
                   }
