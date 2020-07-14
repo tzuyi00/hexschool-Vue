@@ -241,7 +241,7 @@ var app = new Vue({
       url: 'https://randomuser.me/api/',
       dataType: 'json',
       success: function(data) {
-        vm.user = data.results[0];
+        vm.user = data.results[0]; //將抓到的第0筆資料，放入data裡的user
       }
     });
   }

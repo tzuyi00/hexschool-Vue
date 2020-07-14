@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Slot 插槽替換</title>
+    <title>向外層傳送事件(Data)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="images/favicon.ico" rel="shortcut icon">
     <meta charset="UTF-8">
@@ -78,13 +78,13 @@
 
 
 
-      <a href="/components/emit.html"  class="btn btn-block btn-link">
+      <a href="/components/emit.html"  class="btn btn-block btn-primary active">
         向外層傳送事件(Data)
       </a>
 
 
 
-      <a href="/components/slot.html"  class="btn btn-block btn-primary active">
+      <a href="/components/slot.html"  class="btn btn-block btn-link">
         Slot 插槽替換
       </a>
 
@@ -112,7 +112,7 @@
 
         <div class="col-md-9 post">
           <!-- 練習開始 -->
-          <h1 class="mt-0 text-muted">Slot 插槽替換</h1>
+          <h1 class="mt-0 text-muted">向外層傳送事件(Data)</h1>
 
 <div class="alert alert-secondary">
   <ol class="mb-0">
@@ -121,92 +121,53 @@
 </div>
 
 <div id="app">
-
-<!-- no-slot html tag -->
-  <h2>沒有插槽可替換的狀態</h2>
-  <no-slot-component>沒有slot插槽就取代不了</no-slot-component>
-
-<!-- single-slot html tag -->
-  <h2>Slot 基礎範例</h2>
-  <single-slot-component> </single-slot-component>
-  <single-slot-component>這段內容會取代原本slot標籤內的文字</single-slot-component>
-
-<!-- named-slot html tag -->
-  <h2>具名插槽</h2>
-  <named-slot-component>
-  </named-slot-component>
-
-  <named-slot-component>
-    <header slot="header">替換的 Header</header>
-    <!-- * 使用template標籤時，可不用產生多於標籤 -->
-    <template slot="footer">替換的 Footer</template>
-    <template slot="btn">按鈕內容</template>
-    <p slot="other">其餘的內容</p>
-  </named-slot-component>
+  <h2>透過 emit 向外傳遞資訊</h2>
+  我透過元件儲值了 {{ cash }} 元
+  <button class="btn btn-primary" @click="incrementTotal(1)">點我</button>
+  <!-- 觸發事件@increment可自訂名，透過$emit觸發 -->
+  <button-counter @increment="incrementTotal"></button-counter>
+  <hr>
+  <button-counter @increment="incrementTotal"></button-counter>
 </div>
 
-<!-- ============================================================== -->
-
-<!-- #noSlotComponent x-template元件 -->
-<script type="text/x-template" id="noSlotComponent">
-<div class="alert alert-warning">
-  <h6>我是一個元件</h6>
-  <p>
-    這沒有插槽。
-  </p>
-</div>
-</script>
-
-<!-- #noSlotComponent x-template元件 -->
-<script type="text/x-template" id="singleSlotComponent">
-<div class="alert alert-warning">
-  <h6>我是一個元件</h6>
-  <slot>如果沒有內容，則會顯示此段落。</slot>
-</div>
-</script>
-
-<!-- #noSlotComponent x-template元件 -->
-<script type="text/x-template" id="namedSlotComponent">
-<div class="card my-3">
-  <div class="card-header">
-    <slot name="header">這段是預設的文字</slot>
+<script type="text/x-template" id="componentTemplate">
+  <div>
+    <button @click="incrementCounter" class="btn btn-outline-primary">增加 {{ counter }} 元</button>
+    <input type="number" class="form-control mt-2" v-model="counter">
   </div>
-  <div class="card-body">
-    <slot name="other">
-      <h5 class="card-title">Special title treatment</h5>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    </slot>
-    <a href="#" class="btn btn-primary">
-      <slot name="btn">spanGo somewhere</slot>
-    </a>
-  </div>
-  <div class="card-footer">
-    <slot name="footer">這是預設的 Footer</slot>
-  </div>
-</div>
 </script>
-
-<!-- ============================================================== -->
 
 <script>
- // no-slot component元件
-Vue.component('no-slot-component', {
-  template: '#noSlotComponent',
-});
-
- // single-slot component元件
-Vue.component('single-slot-component', {
-  template: '#singleSlotComponent',
-});
-
- // named-slot component元件
-Vue.component('named-slot-component', {
-  template: '#namedSlotComponent',
+Vue.component('buttonCounter', {
+  template:'#componentTemplate',
+  // template: `<div>
+  //   <button @click="incrementCounter" class="btn btn-outline-primary">增加 {{ counter }} 元</button>
+  //   <input type="number" class="form-control mt-2" v-model="counter">
+  // </div>`,
+  data: function() {
+    return {
+      counter: 1
+    }
+  },
+  methods: {
+    incrementCounter: function () {
+      // emit可以用來觸發外部的事件(increment對照畫面上的@increment)，由內層觸發到外層
+      // Number() 確保傳出為數值
+      this.$emit('increment', Number(this.counter));  //this.$emit('觸發事件', 參數)
+    }
+  }
 });
 
 var app = new Vue({
   el: '#app',
-  data: {}
+  data: {
+    cash: 300
+  },
+  methods: {
+    incrementTotal: function (newNumber) {
+      this.cash = this.cash + newNumber;
+    }
+  }
 });
 </script>
         </div>

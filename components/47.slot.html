@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>元件必須使用 function return</title>
+    <title>Slot 插槽替換</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="images/favicon.ico" rel="shortcut icon">
     <meta charset="UTF-8">
@@ -54,7 +54,7 @@
 
 
 
-      <a href="/components/function_return.html"  class="btn btn-block btn-primary active">
+      <a href="/components/function_return.html"  class="btn btn-block btn-link">
         元件必須使用 function return
       </a>
 
@@ -84,7 +84,7 @@
 
 
 
-      <a href="/components/slot.html"  class="btn btn-block btn-link">
+      <a href="/components/slot.html"  class="btn btn-block btn-primary active">
         Slot 插槽替換
       </a>
 
@@ -112,42 +112,102 @@
 
         <div class="col-md-9 post">
           <!-- 練習開始 -->
-          <h1 class="mt-0 text-muted">元件必須使用 function return</h1>
+          <h1 class="mt-0 text-muted">Slot 插槽替換</h1>
 
 <div class="alert alert-secondary">
   <ol class="mb-0">
-    <li>修正計數器所產生的錯誤</li>
+    <li>請跟隨課程完成此章節。</li>
   </ol>
 </div>
 
 <div id="app">
-  <counter-component></counter-component>
-  <counter-component></counter-component>
-  <counter-component></counter-component>
+
+<!-- no-slot html tag -->
+  <h2>沒有插槽可替換的狀態</h2>
+  <no-slot-component>沒有slot插槽就取代不了</no-slot-component>
+
+<!-- single-slot html tag -->
+  <h2>Slot 基礎範例</h2>
+  <single-slot-component> </single-slot-component>
+  <single-slot-component>這段內容會取代原本slot標籤內的文字</single-slot-component>
+
+<!-- named-slot html tag -->
+  <h2>具名插槽</h2>
+  <named-slot-component>
+  </named-slot-component>
+
+  <named-slot-component>
+    <header slot="header">替換的 Header</header>
+    <!-- * 使用template標籤時，可不用產生多於標籤 -->
+    <template slot="footer">替換的 Footer</template>
+    <template slot="btn">按鈕內容</template>
+    <p slot="other">其餘的內容</p>
+  </named-slot-component>
 </div>
 
-<script type="text/x-template" id="counter-component">
-<div>
-  你已經點擊 <button class="btn btn-outline-secondary btn-sm" @click="counter += 1">{{ counter }}</button> 下。
+<!-- ============================================================== -->
+
+<!-- #noSlotComponent x-template元件 -->
+<script type="text/x-template" id="noSlotComponent">
+<div class="alert alert-warning">
+  <h6>我是一個元件</h6>
+  <p>
+    這沒有插槽。
+  </p>
 </div>
 </script>
 
+<!-- #singleSlotComponent x-template元件 -->
+<script type="text/x-template" id="singleSlotComponent">
+<div class="alert alert-warning">
+  <!-- <h6>我是一個元件</h6> -->
+  <slot>這裡有slot，如果沒有內容，則會顯示此段落。</slot>
+</div>
+</script>
+
+<!-- #namedSlotComponent x-template元件 -->
+<script type="text/x-template" id="namedSlotComponent">
+<div class="card my-3">
+  <div class="card-header">
+    <slot name="header">這段是預設的 Header</slot>
+  </div>
+  <div class="card-body">
+    <slot name="other">
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    </slot>
+    <a href="#" class="btn btn-primary">
+      <slot name="btn">spanGo somewhere</slot>
+    </a>
+  </div>
+  <div class="card-footer">
+    <slot name="footer">這是預設的 Footer</slot>
+  </div>
+</div>
+</script>
+
+<!-- ============================================================== -->
+
 <script>
-  // 使用component元件時需使用function,return回傳
-Vue.component('counter-component', {
-  data: function(){
-    return{
-      counter: 0
-    }
-  },
-  template: '#counter-component'
-})
+ // no-slot component元件
+Vue.component('no-slot-component', {
+  template: '#noSlotComponent',
+});
+
+ // single-slot component元件
+Vue.component('single-slot-component', {
+  template: '#singleSlotComponent',
+});
+
+ // named-slot component元件
+Vue.component('named-slot-component', {
+  template: '#namedSlotComponent',
+});
 
 var app = new Vue({
   el: '#app',
+  data: {}
 });
 </script>
-
         </div>
       </div>
     </div>

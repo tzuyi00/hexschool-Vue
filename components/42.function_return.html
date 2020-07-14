@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>向外層傳送事件(Data)</title>
+    <title>元件必須使用 function return</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="images/favicon.ico" rel="shortcut icon">
     <meta charset="UTF-8">
@@ -54,7 +54,7 @@
 
 
 
-      <a href="/components/function_return.html"  class="btn btn-block btn-link">
+      <a href="/components/function_return.html"  class="btn btn-block btn-primary active">
         元件必須使用 function return
       </a>
 
@@ -78,7 +78,7 @@
 
 
 
-      <a href="/components/emit.html"  class="btn btn-block btn-primary active">
+      <a href="/components/emit.html"  class="btn btn-block btn-link">
         向外層傳送事件(Data)
       </a>
 
@@ -112,56 +112,43 @@
 
         <div class="col-md-9 post">
           <!-- 練習開始 -->
-          <h1 class="mt-0 text-muted">向外層傳送事件(Data)</h1>
+          <h1 class="mt-0 text-muted">元件必須使用 function return</h1>
 
 <div class="alert alert-secondary">
   <ol class="mb-0">
-    <li>請跟隨課程完成此章節。</li>
+    <li>修正計數器所產生的錯誤</li>
   </ol>
 </div>
 
 <div id="app">
-  <h2>透過 emit 向外傳遞資訊</h2>
-  我透過元件儲值了 {{ cash }} 元
-  <button class="btn btn-primary" @click="incrementTotal(1)">點我</button>
-  <!-- 觸發事件@increment可自訂名，透過$emit觸發 -->
-  <button-counter @increment="incrementTotal"></button-counter>
-  <hr>
-  <button-counter @increment="incrementTotal"></button-counter>
+  <!-- 每個元件可分別獨立運算 -->
+  <counter-component></counter-component>
+  <counter-component></counter-component>
+  <counter-component></counter-component>
 </div>
 
+<script type="text/x-template" id="counter-component">
+<div>
+  你已經點擊 <button class="btn btn-outline-secondary btn-sm" @click="counter += 1">{{ counter }}</button> 下。
+</div>
+</script>
+
 <script>
-Vue.component('buttonCounter', {
-  template: `<div>
-    <button @click="incrementCounter" class="btn btn-outline-primary">增加 {{ counter }} 元</button>
-    <input type="number" class="form-control mt-2" v-model="counter">
-  </div>`,
-  data: function() {
-    return {
-      counter: 1
+  // 使用component元件時需使用function,return回傳
+Vue.component('counter-component', {
+  data: function(){
+    return{
+      counter: 0
     }
   },
-  methods: {
-    incrementCounter: function () {
-      // emit可以用來觸發外部的事件(increment對照畫面上的@increment)，由內層觸發到外層
-      // Number() 確保傳出為數值
-      this.$emit('increment', Number(this.counter));
-    }
-  }
-});
+  template: '#counter-component'
+})
 
 var app = new Vue({
   el: '#app',
-  data: {
-    cash: 300
-  },
-  methods: {
-    incrementTotal: function (newNumber) {
-      this.cash = this.cash + newNumber;
-    }
-  }
 });
 </script>
+
         </div>
       </div>
     </div>

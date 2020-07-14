@@ -154,9 +154,9 @@
   </button>
   <hr>
   <!-- 想要維持資料狀態，可使用<keep-alive>，使資料不被destroyed() -->
-  <keep-alive>
+  <!-- <keep-alive> -->
     <app-child v-if="isShowing"></app-child>
-  </keep-alive>
+  <!-- </keep-alive> -->
 </div>
 
 <script type="text/x-template" id="childarea">
@@ -177,24 +177,28 @@ const Child = {
   beforeCreate() {
     console.log(`beforeCreate! ${this.text}`);
   },
-  created() {
+  created() {  //資料建立之後，適合處理資料
     alert(`created! ${this.text}`);
   },
   beforeMount() {
     alert(`beforeMount! ${this.text}`);
   },
-  mounted() {
+  mounted() { //元件渲染出html之後，適合處理 DOM
     alert(`mounted! ${this.text}`);
   },
   updated () {
     console.log(`updated! ${this.text}`);
   },
-  activated () {
+
+//只有在加上<keep-alive>才會觸發
+  activated () { 
     alert(`activated! ${this.text}`);
   },
   deactivated () {
     alert(`deactivated! ${this.text}`);
   },
+
+//在沒加上<keep-alive>才會觸發，將資料釋放掉
   beforeDestroy() {
     console.log(`beforeDestroy! ${this.text}`);
   },
